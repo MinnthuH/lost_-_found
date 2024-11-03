@@ -23,14 +23,6 @@ Route::get('/', function (){
     return view('welcome_page');
 })->name('welcome_page');
 
-// Route::get('/request-page', function () {
-//     return view('request_page');
-// })->middleware(['auth', 'verified'])->name('request-page');
-
-// Route::get('/accept-page', function () {
-//     return view('accept_page');
-// })->middleware(['auth', 'verified'])->name('request-page');
-
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

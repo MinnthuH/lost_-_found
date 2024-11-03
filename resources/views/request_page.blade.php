@@ -6,37 +6,19 @@
 <div class="container">
     <div class="row align-items-center m-0">
         <div class="col-lg-8">
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <!-- Mashead text and app badges-->
-            <div class="mb-5 mb-lg-0 text-center text-lg-start">
+            <div class="mb-5 mt-3 mb-lg-0 text-center text-lg-start">
                 <h3 class="display-1 lh-1 mb-3">Running Process..</h3>
-                <table class="table table-dark table-hover">
-                    <!-- <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                    <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                    </tbody> -->
+                <table class="table table-dark table-hover">                    
                     <thead>
                         <tr>
                             <th>Customer Name</th>
@@ -125,7 +107,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ url('/request_register') }}">
+                <form method="POST" action="{{ url('/request_register') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="Name" class="form-label">Phone Brand</label>
@@ -185,20 +167,20 @@
                         <input type="email" class="form-control" name="contact_email"  required>
                     </div>
 
-                    <!-- <div class="mb-3">
+                    <div class="mb-3">
                         <label for="Name" class="form-label">Social Link</label>
-                        <input type="email" class="form-control" name="social_url">
-                    </div> -->
+                        <input type="text" class="form-control" name="social_url">
+                    </div>
 
                     <div class="mb-3">
                         <label for="Name" class="form-label">Message</label>
                         <input type="text" class="form-control" name="message"  required>
                     </div>
 
-                    <!-- <div class="mb-3">
+                    <div class="mb-3">
                         <label for="Name" class="form-label">Image</label>
                         <input type="file" class="form-control" name="image"  required>
-                    </div> -->
+                    </div>
 
                     <div class="mb-3">
                         <label for="Name" class="form-label">Address </label>

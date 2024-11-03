@@ -4,7 +4,18 @@
 <div class="container">
     <div class="row align-items-center m-0">
         <div class="col-lg-8">
-            <div class="mb-3">
+            @if ($errors->any())
+                <div class="alert alert-dismissible fade show bg-danger text-white" role="alert">
+                    <strong>Error!</strong>
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            <div class="mb-3 mt-3">
                 <a href="{{ url('/request-page') }}" class="btn btn-primary rounded-pill"><i class="fa-solid fa-arrow-left-long"></i> Back</a>
             </div>
             <!-- Mashead text and app badges-->
