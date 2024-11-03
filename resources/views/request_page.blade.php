@@ -10,7 +10,7 @@
             <div class="mb-5 mb-lg-0 text-center text-lg-start">
                 <h3 class="display-1 lh-1 mb-3">Running Process..</h3>
                 <table class="table table-dark table-hover">
-                    <thead>
+                    <!-- <thead>
                         <tr>
                           <th scope="col">#</th>
                           <th scope="col">First</th>
@@ -18,7 +18,7 @@
                           <th scope="col">Handle</th>
                         </tr>
                       </thead>
-                      <tbody>
+                    <tbody>
                         <tr>
                           <th scope="row">1</th>
                           <td>Mark</td>
@@ -36,8 +36,36 @@
                           <td colspan="2">Larry the Bird</td>
                           <td>@twitter</td>
                         </tr>
-                      </tbody>
-                  </table>
+                    </tbody> -->
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Phone Name</th>
+                            <th>Phone Color</th>
+                            <th>Lost Date</th>
+                            <th>Lost Location</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($request_datas as $request)
+                            <tr>
+                                @foreach($users as $user)
+                                    @if($request->user_id == $user->id)
+                                        <td>{{$user->name}}</td>
+                                    @endif
+                                @endforeach
+                                <td>{{$request->name}}</td>
+                                <td>{{$request->phone_color}}</td>
+                                <td>{{$request->lost_date}}</td>
+                                <td>{{$request->lost_location}}</td>
+                                <td>{{$request->address}}</td>
+                                <td>{{$request->status}}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
                 <div class="d-flex flex-column flex-lg-row align-items-center">
                     <button type="button" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
                         data-bs-toggle="modal" data-bs-target="#requestModal">
@@ -97,10 +125,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form method="POST" action="{{ url('/request_register') }}">
+                    @csrf
                     <div class="mb-3">
                         <label for="Name" class="form-label">Phone Brand</label>
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" aria-label="Default select example" name="brand_id">
                             <option selected>Open this select menu</option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
@@ -109,41 +138,74 @@
                     </div>
                     <div class="mb-3">
                         <label for="Name" class="form-label">Phone Model</label>
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" aria-label="Default select example" name="name">
                             <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option value="one">One</option>
+                            <option value="two">Two</option>
+                            <option value="three">Three</option>
                           </select>
                     </div>
                     <div class="mb-3">
                         <label for="Name" class="form-label">Phone Color</label>
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" aria-label="Default select example" name="phone_color">
                             <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option value="one">One</option>
+                            <option value="two">Two</option>
+                            <option value="three">Three</option>
                           </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="Phone Number" class="form-label">IMEI Number</label>
-                        <input type="number" class="form-control"  required>
+                        <input type="number" class="form-control" name="imei_number"  required>
                     </div>
 
                     <div class="mb-3">
                         <label for="Name" class="form-label">Lost Date</label>
-                        <input type="date" class="form-control"  required>
+                        <input type="date" class="form-control" name="lost_date"  required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Lost Time</label>
+                        <input type="time" class="form-control" name="lost_time"  required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Lost Location</label>
+                        <input type="text" class="form-control" name="lost_location"  required>
                     </div>
 
                     <div class="mb-3">
                         <label for="Name" class="form-label">Contact Number</label>
-                        <input type="text" class="form-control"  required>
+                        <input type="text" class="form-control" name="contact_number"  required>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Contact Email</label>
+                        <input type="email" class="form-control" name="contact_email"  required>
+                    </div>
+
+                    <!-- <div class="mb-3">
+                        <label for="Name" class="form-label">Social Link</label>
+                        <input type="email" class="form-control" name="social_url">
+                    </div> -->
+
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Message</label>
+                        <input type="text" class="form-control" name="message"  required>
+                    </div>
+
+                    <!-- <div class="mb-3">
+                        <label for="Name" class="form-label">Image</label>
+                        <input type="file" class="form-control" name="image"  required>
+                    </div> -->
+
                     <div class="mb-3">
                         <label for="Name" class="form-label">Address </label>
-                        <input type="text" class="form-control"  required>
+                        <!-- <input type="text" class="form-control" name="address"  required> -->
+                         <textarea name="address" class="form-control"></textarea>
                     </div>
+
                     <button type="submit" class="btn btn-primary w-100">Request</button>
                 </form>
             </div>

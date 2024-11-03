@@ -1,4 +1,6 @@
 @extends('index')
+@extends('auth.register')
+@extends('auth.login')
 
 
 @section('main')

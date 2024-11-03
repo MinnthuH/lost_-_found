@@ -10,11 +10,24 @@
                 {{-- <li class="nav-item"><a class="nav-link me-lg-3" href="#features">Features</a></li>
                 <li class="nav-item"><a class="nav-link me-lg-3" href="#download">Download</a></li> --}}
             </ul>
-            <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#loginModal">
-                <span class="d-flex align-items-center">
-                    <span class="small">Login</span>
-                </span>
-            </button>
+            @auth
+                <!-- Show Logout Button if User is Logged In -->
+                <form method="POST" action="{{ route('logout') }}" id="logoutForm" class="d-flex justify-content-center">
+                    @csrf
+                    <button type="submit" class="p-1 btn btn-danger rounded-pill" id="logoutButton">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </button>
+                </form>
+            @endauth
+
+            @guest
+                <!-- Show Login Button if User is Not Logged In -->
+                <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <span class="d-flex align-items-center">
+                        <span class="small">Login</span>
+                    </span>
+                </button>
+            @endguest
         </div>
     </div>
 </nav>
