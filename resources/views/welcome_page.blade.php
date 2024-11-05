@@ -8,6 +8,13 @@
 <div class="container px-5">
     <div class="row gx-5 align-items-center">
         <div class="col-lg-6">
+            @if (session('error'))
+                <div class="alert alert-dismissible fade show bg-danger text-white" role="alert">
+                    <strong>Danger!</strong> {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                </div>
+            @endif
             <!-- Mashead text and app badges-->
             <div class="mb-5 mb-lg-0 text-center text-lg-start">
                 <h1 class="display-1 lh-1 mb-3">Find with Pencil</h1>

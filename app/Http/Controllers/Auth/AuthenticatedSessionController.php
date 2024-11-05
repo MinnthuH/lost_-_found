@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -24,7 +25,11 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
-    {
+    {        
+        $user = User::where('email', $request->email)->first();
+        if($user && $user->status == 'disable'){
+            return redirect()->route('welcome_page')->with('error','Your account is disable.');
+        }        
         $request->authenticate();
 
         $request->session()->regenerate();

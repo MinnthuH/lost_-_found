@@ -50,7 +50,7 @@ class RequestController extends Controller
             }
 
             $request_store->save();            
-            return view('accept_page')->with('success', 'Your Request Form is Successful!');        
+            return redirect()->route('accept_page')->with('success', 'Your Request Form is Successful!');        
     }
 
     // Function to generate unique ID with date

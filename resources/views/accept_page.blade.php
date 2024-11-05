@@ -15,6 +15,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+
+            @if (session('success'))
+                <div class="alert alert-dismissible fade show bg-success text-white" role="alert">
+                    <strong>Success!</strong> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                </div>
+            @endif
             <div class="mb-3 mt-3">
                 <a href="{{ url('/request-page') }}" class="btn btn-primary rounded-pill"><i class="fa-solid fa-arrow-left-long"></i> Back</a>
             </div>

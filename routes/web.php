@@ -23,6 +23,13 @@ Route::get('/', function (){
     return view('welcome_page');
 })->name('welcome_page');
 
+// accept
+Route::middleware(['auth'])->group(function () {
+    Route::get('/accept_page', function () {
+        return view('accept_page');
+    })->name('accept_page');
+});
+
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -31,6 +38,7 @@ Route::middleware('auth', 'verified')->group(function () {
     // request 
     Route::get('/request-page', [RequestController::class,'request_page'])->name('request-page');
     Route::post('/request_register',[RequestController::class,'request_register'])->name('request_register');
+    
 });
 
 require __DIR__.'/auth.php';
