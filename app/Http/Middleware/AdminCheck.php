@@ -22,7 +22,7 @@ class AdminCheck
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check() && Auth::user()->role === 'admin') {
-            return redirect()->route('filament.pages.dashboard');
+            return $next($request);
         }
 
         return redirect('/request-page');

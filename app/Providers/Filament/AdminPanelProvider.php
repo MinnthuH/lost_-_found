@@ -50,6 +50,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                'admin.check', // Add the custom admin access middleware here
             ])
             ->authMiddleware([
                 Authenticate::class,

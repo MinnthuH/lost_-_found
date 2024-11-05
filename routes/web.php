@@ -30,16 +30,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('accept_page');
 });
 
-Route::middleware(['auth', 'admin.check'])->group(function () {
-    Route::get('/admin', function () {
-        return redirect()->to('/admin'); // Redirect to Filament's dashboard.
-    })->name('filament.pages.dashboard');
-});
 
-
-Route::middleware('auth', 'verified')->group(function () {
-
-    // Route::get('/admin', 'AdminController@index')->middleware('admin.check');
+Route::middleware('auth', 'verified')->group(function () {   
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -48,6 +40,7 @@ Route::middleware('auth', 'verified')->group(function () {
     // request 
     Route::get('/request-page', [RequestController::class,'request_page'])->name('request-page');
     Route::post('/request_register',[RequestController::class,'request_register'])->name('request_register');
+    Route::post('/get_color',[RequestController::class,'get_color'])->name('get.color');
     
 });
 

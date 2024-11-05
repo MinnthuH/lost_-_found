@@ -149,36 +149,27 @@
                         <div class="row">
                             <div class="mb-3 col-12 col-md-6"> <!-- Changed to col-12 for mobile -->
                                 <label for="brand_id" class="form-label">Phone Brand</label>
-                                <select id="brandSelect" class="form-select" aria-label="Select Phone Brand" name="brand_id" required>
+                                <select id="brandSelect" class="form-select" aria-label="Select Phone Brand" name="brand_id" required onchange="updateModels()">
                                     <option selected disabled>Open this select menu</option>
                                     @foreach ($brands as $brand)
                                         <option data-device-id="{{ $brand->device_id }}" value="{{ $brand->id }}">{{ $brand->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mb-3 col-12 col-md-6">
-                                <!-- <label for="phone_model" class="form-label">Phone Model</label>
-                                <select class="form-select" aria-label="Select Phone Model" name="phone_model" required>
+
+                            <div class="mb-3 col-12 col-md-6"> <!-- Changed to col-12 for mobile -->
+                                <label for="phone_model" class="form-label">Phone Model</label>
+                                <select id="modelSelect" class="form-select" aria-label="Select Phone Model" name="phone_model" required>
                                     <option selected disabled>Open this select menu</option>
-                                    <option value="one">One</option>
-                                    <option value="two">Two</option>
-                                    <option value="three">Three</option>
-                                </select> -->
-                                <label for="brand_id" class="form-label">Phone Brand</label>
-                                <select id="brandSelect" class="form-select" aria-label="Select Phone Brand" name="brand_id" required>
-                                    <option selected disabled>Open this select menu</option>
-                                    @foreach ($brands as $brand)
-                                        <option data-device-id="{{ $brand->device_id }}" value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                    @foreach ($models as $model)
+                                        <option data-brand-id="{{ $model->brand_id }}" value="{{ $model->model }}">{{ $model->model }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3 col-12 col-md-6">
                                 <label for="phone_color" class="form-label">Phone Color</label>
-                                <select class="form-select" aria-label="Select Phone Color" name="phone_color" required>
+                                <select id="colorSelect" class="form-select" aria-label="Select Phone Color" name="phone_color" required>
                                     <option selected disabled>Open this select menu</option>
-                                    <option value="one">One</option>
-                                    <option value="two">Two</option>
-                                    <option value="three">Three</option>
                                 </select>
                             </div>
 
@@ -242,8 +233,8 @@
     </div>
 </div>
 
+<script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
 <script>
-    
     function updateBrands() {
         const selectedDeviceId = document.querySelector('input[name="device"]:checked').getAttribute('data-device-id');
         const brandSelect = document.getElementById('brandSelect');
@@ -259,10 +250,62 @@
 
         // Reset to the first option (if any) to avoid invalid selection
         brandSelect.selectedIndex = 0;
+
+        // Call updateModels to filter the models based on the selected brand
+        updateModels();
     }
 
+    // Function to update the phone models based on selected brand
+    function updateModels() {
+        const selectedBrandId = document.getElementById('brandSelect').value;
+        const modelSelect = document.getElementById('modelSelect');
+        const options = modelSelect.options;
+
+        // Loop through options and show/hide based on the selected brand
+        for (let i = 0; i < options.length; i++) {
+            const option = options[i];
+            if (option.value) { // Only check options that have a value
+                option.style.display = option.getAttribute('data-brand-id') === selectedBrandId ? 'block' : 'none';
+            }
+        }
+
+        // Reset to the first option (if any) to avoid invalid selection
+        modelSelect.selectedIndex = 0;
+    }
+
+    $(document).on('change', '#modelSelect', function() {
+        let model_id = $(this).val(); // Get the selected model ID
+        let color_select = $('#colorSelect'); // Find the color select element
+
+        // AJAX call to fetch colors based on model_id
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('get.color') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                model: model_id,
+            },
+            success: function(colors) {
+                // Clear existing options
+                console.log(colors[0]);
+                color_select.empty();
+                // Add a default option
+                color_select.append('<option selected disabled>Open this select menu</option>');
+                // $('.customer_datas').html($(response).find('.customer_datas').html());
+                let get_colors = colors[0].color;
+                // Loop through the colors array and append each color as an option
+                $.each(get_colors, function(index, color) {
+                    color_select.append('<option value="' + color + '">' + color + '</option>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.log('Error:', error); // Log any errors
+            }
+        });
+    });
+
     // Call updateBrands when the page loads
-    window.onload = updateBrands;
+    window.onload = updateBrands;    
 
 
     function clearFormData() {

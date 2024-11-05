@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 
 class BrandResource extends Resource
 {
@@ -22,36 +21,13 @@ class BrandResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('device_id')
-                    ->relationship('device', 'name')
+                    ->label('Device')
+                    ->relationship('device', 'name') // Assuming 'device' is the related model
                     ->required(),
-
+                    
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-
-                Forms\Components\TextInput::make('model')
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TagsInput::make('color')
-                    ->suggestions([
-                        'grey',
-                        'black',
-                        'white',
-                    ])
-                    ->afterStateUpdated(fn ($state, callable $set) => $set('color', implode(',', $state))) // Convert array to comma-separated string
-                    ->required(),
-
-                Forms\Components\TextInput::make('description')
-                    ->maxLength(255),
-
-                Forms\Components\Toggle::make('status')
-                    ->required(),
-
-                Forms\Components\FileUpload::make('image')
-                    ->image()
-                    ->directory('images') // Specify the directory to save images
-                    ->nullable(),
             ]);
     }
 
@@ -59,33 +35,8 @@ class BrandResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('device_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('model')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('color')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('status')
-                    ->boolean(),
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Image')
-                    ->url(fn ($record) => $record->image ? asset('storage/images/' . $record->image) : null), // Display image if exists
-                Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

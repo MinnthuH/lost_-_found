@@ -9,6 +9,7 @@ use App\Models\Request as RequestModel;
 use App\Models\User;
 use App\Models\Device;
 use App\Models\Brand;
+use App\Models\PhoneModel;
 
 class RequestController extends Controller
 {
@@ -17,9 +18,41 @@ class RequestController extends Controller
         $request_datas = RequestModel::orderBy('id', 'desc')->take(5)->get();
         $users = User::all();       
         $devices = Device::all();
-        $brands = Brand::all();        
-        return view('request_page', compact('request_datas', 'users','devices','brands'));
+        $brands = Brand::all(); 
+        $models = PhoneModel::all();
+        // dd($models);
+        return view('request_page', compact('request_datas', 'users','devices','brands','models'));
+    }    
+
+    public function get_color(Request $request)
+    {       
+        
+        $colors = PhoneModel::select('color')->where('model', $request->model)->get();
+        if ($colors->isEmpty()) {
+            return response()->json(['error' => 'Colors not found'], 404);
+        }
+
+        // $colors->color = explode(', ', $colors); // Split color by comma and space
+        // info($colors->color);
+        // Return the list of colors as a JSON response
+        return response()->json($colors);
     }
+
+//     public function get_color(Request $request)
+// {       
+//     // Get the color data for the given model
+//     $colorData = PhoneModel::select('color')->where('model', $request->model)->first();
+    
+//     if (!$colorData) {
+//         return response()->json(['error' => 'Colors not found'], 404);
+//     }
+
+//     // Split the color string by comma and space and convert it to an array
+//     $colorData->color = explode(', ', $colorData->color);
+
+//     // Return the list of colors as a JSON response
+//     return response()->json($colorData);
+// }
 
     // Request store
     public function request_register(Request $request) {
