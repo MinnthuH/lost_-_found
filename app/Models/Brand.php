@@ -20,6 +20,17 @@ class Brand extends Model
         'description',
     ];
 
+    public function getColorAttribute($value)
+    {
+        return $value ? explode(',', $value) : [];
+    }
+
+    // Mutator to convert the array to a string before saving to the database
+    public function setColorAttribute($value)
+    {
+        $this->attributes['color'] = is_array($value) ? implode(',', $value) : $value;
+    }
+
     public function device()
     {
         return $this->belongsTo(Device::class);

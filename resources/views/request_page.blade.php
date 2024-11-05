@@ -1,3 +1,12 @@
+<style>
+    .modal-lg {
+        max-width: 80%; /* Or any percentage you prefer */
+    }
+    .modal-body {
+        max-height: 80vh; /* Adjust as necessary */
+        overflow-y: auto; /* Add scroll if content overflows */
+    }
+</style>
 @extends('index')
 
 
@@ -18,36 +27,39 @@
             <!-- Mashead text and app badges-->
             <div class="mb-5 mt-3 mb-lg-0 text-center text-lg-start">
                 <h3 class="display-1 lh-1 mb-3">Running Process..</h3>
-                <table class="table table-dark table-hover">                    
-                    <thead>
-                        <tr>
-                            <th>Customer Name</th>
-                            <th>Phone Name</th>
-                            <th>Phone Color</th>
-                            <th>Lost Date</th>
-                            <th>Lost Location</th>
-                            <th>Address</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($request_datas as $request)
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">                    
+                        <thead>
                             <tr>
-                                @foreach($users as $user)
-                                    @if($request->user_id == $user->id)
-                                        <td>{{$user->name}}</td>
-                                    @endif
-                                @endforeach
-                                <td>{{$request->name}}</td>
-                                <td>{{$request->phone_color}}</td>
-                                <td>{{$request->lost_date}}</td>
-                                <td>{{$request->lost_location}}</td>
-                                <td>{{$request->address}}</td>
-                                <td>{{$request->status}}</td>
+                                <th>Customer Name</th>
+                                <th>Phone Name</th>
+                                <th>Phone Color</th>
+                                <th>Lost Date</th>
+                                <th>Lost Location</th>
+                                <th>Address</th>
+                                <th>Status</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach($request_datas as $request)
+                                <tr>
+                                    @foreach($users as $user)
+                                        @if($request->user_id == $user->id)
+                                            <td>{{$user->name}}</td>
+                                        @endif
+                                    @endforeach
+                                    <td>{{$request->phone_model}}</td>
+                                    <td>{{$request->phone_color}}</td>
+                                    <td>{{$request->lost_date}}</td>
+                                    <td>{{$request->lost_location}}</td>
+                                    <td>{{$request->address}}</td>
+                                    <td>{{$request->status}}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                
                 <div class="d-flex flex-column flex-lg-row align-items-center">
                     <button type="button" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
                         data-bs-toggle="modal" data-bs-target="#requestModal">
@@ -100,7 +112,7 @@
 {{-- request modal --}}
 
 <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="requestModalLabel">Lost Request</h5>
@@ -109,92 +121,169 @@
             <div class="modal-body">
                 <form method="POST" action="{{ url('/request_register') }}" enctype="multipart/form-data">
                     @csrf
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Phone Brand</label>
-                        <select class="form-select" aria-label="Default select example" name="brand_id">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                          </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Phone Model</label>
-                        <select class="form-select" aria-label="Default select example" name="name">
-                            <option selected>Open this select menu</option>
-                            <option value="one">One</option>
-                            <option value="two">Two</option>
-                            <option value="three">Three</option>
-                          </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Phone Color</label>
-                        <select class="form-select" aria-label="Default select example" name="phone_color">
-                            <option selected>Open this select menu</option>
-                            <option value="one">One</option>
-                            <option value="two">Two</option>
-                            <option value="three">Three</option>
-                          </select>
-                    </div>
+                        <div class="row mb-3">
+                            <h5>Select Device</h5>
+                            <div class="col-6 col-md-2">                                
+                                @foreach ($devices->take(ceil($devices->count() / 2)) as $index => $device)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="device" id="device_{{ $device->id }}" value="{{ $device->id }}" data-device-id="{{ $device->id }}" required onchange="updateBrands()" 
+                                            {{ $index === 0 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="device_{{ $device->id }}">
+                                            {{ $device->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="col-6 col-md-2">                                
+                                @foreach ($devices->skip(ceil($devices->count() / 2)) as $index => $device)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="device" id="device_{{ $device->id }}" value="{{ $device->id }}" data-device-id="{{ $device->id }}" required onchange="updateBrands()">
+                                        <label class="form-check-label" for="device_{{ $device->id }}">
+                                            {{ $device->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="mb-3 col-12 col-md-6"> <!-- Changed to col-12 for mobile -->
+                                <label for="brand_id" class="form-label">Phone Brand</label>
+                                <select id="brandSelect" class="form-select" aria-label="Select Phone Brand" name="brand_id" required>
+                                    <option selected disabled>Open this select menu</option>
+                                    @foreach ($brands as $brand)
+                                        <option data-device-id="{{ $brand->device_id }}" value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <!-- <label for="phone_model" class="form-label">Phone Model</label>
+                                <select class="form-select" aria-label="Select Phone Model" name="phone_model" required>
+                                    <option selected disabled>Open this select menu</option>
+                                    <option value="one">One</option>
+                                    <option value="two">Two</option>
+                                    <option value="three">Three</option>
+                                </select> -->
+                                <label for="brand_id" class="form-label">Phone Brand</label>
+                                <select id="brandSelect" class="form-select" aria-label="Select Phone Brand" name="brand_id" required>
+                                    <option selected disabled>Open this select menu</option>
+                                    @foreach ($brands as $brand)
+                                        <option data-device-id="{{ $brand->device_id }}" value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <label for="phone_color" class="form-label">Phone Color</label>
+                                <select class="form-select" aria-label="Select Phone Color" name="phone_color" required>
+                                    <option selected disabled>Open this select menu</option>
+                                    <option value="one">One</option>
+                                    <option value="two">Two</option>
+                                    <option value="three">Three</option>
+                                </select>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="Phone Number" class="form-label">IMEI Number</label>
-                        <input type="number" class="form-control" name="imei_number"  required>
-                    </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <label for="imei_number" class="form-label">IMEI Number</label>
+                                <input type="number" class="form-control" name="imei_number" required>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Lost Date</label>
-                        <input type="date" class="form-control" name="lost_date"  required>
-                    </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <label for="lost_date" class="form-label">Lost Date</label>
+                                <input type="date" class="form-control" name="lost_date" required>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Lost Time</label>
-                        <input type="time" class="form-control" name="lost_time"  required>
-                    </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <label for="lost_time" class="form-label">Lost Time</label>
+                                <input type="time" class="form-control" name="lost_time" required>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Lost Location</label>
-                        <input type="text" class="form-control" name="lost_location"  required>
-                    </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <label for="lost_location" class="form-label">Lost Location</label>
+                                <input type="text" class="form-control" name="lost_location" required>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Contact Number</label>
-                        <input type="text" class="form-control" name="contact_number"  required>
-                    </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <label for="contact_number" class="form-label">Contact Number</label>
+                                <input type="text" class="form-control" name="contact_number" required>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Contact Email</label>
-                        <input type="email" class="form-control" name="contact_email"  required>
-                    </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <label for="contact_email" class="form-label">Contact Email</label>
+                                <input type="email" class="form-control" name="contact_email" required>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Social Link</label>
-                        <input type="text" class="form-control" name="social_url">
-                    </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <label for="social_url" class="form-label">Social Link</label>
+                                <input type="text" class="form-control" name="social_url">
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Message</label>
-                        <input type="text" class="form-control" name="message"  required>
-                    </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <label for="message" class="form-label">Message</label>
+                                <input type="text" class="form-control" name="message" required>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Image</label>
-                        <input type="file" class="form-control" name="image"  required>
-                    </div>
+                            <div class="mb-3 col-12 col-md-6">
+                                <label for="image" class="form-label">Image</label>
+                                <input type="file" class="form-control" name="image" required>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="Name" class="form-label">Address </label>
-                        <!-- <input type="text" class="form-control" name="address"  required> -->
-                         <textarea name="address" class="form-control"></textarea>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary w-100">Request</button>
+                            <div class="mb-3 col-12">
+                                <label for="address" class="form-label">Address</label>
+                                <textarea name="address" class="form-control"></textarea>
+                            </div>
+                        </div>                       
+                        <div class="d-flex justify-content-around">
+                            <button type="submit" class="btn btn-primary col-4">Request</button>
+                            <button type="button" id="clear_data" class="btn btn-danger col-4" onclick="clearFormData()">Clear Data</button>
+                        </div>                        
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    
+    function updateBrands() {
+        const selectedDeviceId = document.querySelector('input[name="device"]:checked').getAttribute('data-device-id');
+        const brandSelect = document.getElementById('brandSelect');
+        const options = brandSelect.options;
 
+        // Loop through options and show/hide based on the selected device
+        for (let i = 0; i < options.length; i++) {
+            const option = options[i];
+            if (option.value) { // Only check options that have a value
+                option.style.display = option.getAttribute('data-device-id') === selectedDeviceId ? 'block' : 'none';
+            }
+        }
+
+        // Reset to the first option (if any) to avoid invalid selection
+        brandSelect.selectedIndex = 0;
+    }
+
+    // Call updateBrands when the page loads
+    window.onload = updateBrands;
+
+
+    function clearFormData() {
+        // Reset all input fields
+        const inputs = document.querySelectorAll('input[type="text"], input[type="number"], input[type="email"], input[type="date"], input[type="time"], input[type="file"], textarea');
+        inputs.forEach(input => {
+            input.value = '';
+        });
+
+        // Reset all select elements
+        const selects = document.querySelectorAll('select');
+        selects.forEach(select => {
+            select.selectedIndex = 0; // Reset to the first option (usually the default "Open this select menu")
+        });
+
+        // Reset radio buttons (uncheck them)
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach(radio => {
+            radio.checked = false;
+        });
+    }
+</script>
 
 @endsection

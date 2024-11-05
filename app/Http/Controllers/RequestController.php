@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Request as RequestModel;
 use App\Models\User;
+use App\Models\Device;
+use App\Models\Brand;
 
 class RequestController extends Controller
 {
@@ -14,7 +16,9 @@ class RequestController extends Controller
     public function request_page() {
         $request_datas = RequestModel::orderBy('id', 'desc')->take(5)->get();
         $users = User::all();       
-        return view('request_page', compact('request_datas', 'users'));
+        $devices = Device::all();
+        $brands = Brand::all();        
+        return view('request_page', compact('request_datas', 'users','devices','brands'));
     }
 
     // Request store
@@ -29,7 +33,7 @@ class RequestController extends Controller
             $request_store->job_id = $this->generateUniqueIdWithDate($request->lost_date);
             $request_store->user_id = Auth::user()->id;
             $request_store->brand_id = $request->brand_id;
-            $request_store->name = $request->name;
+            $request_store->phone_model = $request->phone_model;
             $request_store->phone_color = $request->phone_color;
             $request_store->imei_number = $request->imei_number;
             $request_store->lost_date = $request->lost_date;
@@ -48,6 +52,8 @@ class RequestController extends Controller
                 $file->move('images', $filename); // Move the file to the specified directory
                 $request_store->image = $filename; // Assign the filename to the model
             }
+            // $path = $file->storeAs('images', $filename, 'public');
+            // $request_store->image = $path;
 
             $request_store->save();            
             return redirect()->route('accept_page')->with('success', 'Your Request Form is Successful!');        

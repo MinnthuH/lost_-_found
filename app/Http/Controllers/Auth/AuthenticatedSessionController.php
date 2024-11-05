@@ -23,19 +23,23 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
-     */
+     */    
+
     public function store(LoginRequest $request): RedirectResponse
     {        
         $user = User::where('email', $request->email)->first();
-        if($user && $user->status == 'disable'){
-            return redirect()->route('welcome_page')->with('error','Your account is disable.');
+
+        if ($user && $user->status === 'disable') {
+            return redirect()->route('welcome_page')->with('error', 'Your account is disabled.');
         }        
+
         $request->authenticate();
 
         $request->session()->regenerate();
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
+
 
     /**
      * Destroy an authenticated session.

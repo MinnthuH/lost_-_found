@@ -3,15 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BrandResource\Pages;
-use App\Filament\Resources\BrandResource\RelationManagers;
 use App\Models\Brand;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class BrandResource extends Resource
 {
@@ -24,22 +22,24 @@ class BrandResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('device_id')
-
                     ->relationship('device', 'name')
                     ->required(),
 
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('model')
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TagsInput::make('color')
                     ->suggestions([
                         'grey',
                         'black',
                         'white',
                     ])
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('color', implode(',', $state))) // Convert array to comma-separated string
                     ->required(),
 
                 Forms\Components\TextInput::make('description')
@@ -47,8 +47,11 @@ class BrandResource extends Resource
 
                 Forms\Components\Toggle::make('status')
                     ->required(),
+
                 Forms\Components\FileUpload::make('image')
-                    ->image(),
+                    ->image()
+                    ->directory('images') // Specify the directory to save images
+                    ->nullable(),
             ]);
     }
 
@@ -67,7 +70,9 @@ class BrandResource extends Resource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
-                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Image')
+                    ->url(fn ($record) => $record->image ? asset('storage/images/' . $record->image) : null), // Display image if exists
                 Tables\Columns\TextColumn::make('description')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')

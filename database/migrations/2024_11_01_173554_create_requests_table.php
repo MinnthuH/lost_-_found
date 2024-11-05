@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('job_id')->unique();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('brand_id');
-            $table->string('name');
+            $table->string('phone_model');
             $table->string('phone_color');
             $table->string('imei_number');
             $table->date('lost_date')->nullable();
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('message')->nullable();
             $table->string('image')->nullable();
             $table->string('status')->default('inreview');
+            $table->string('public_show')->nullable();
             $table->timestamps();
         });
     }
