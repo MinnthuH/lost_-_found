@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
         // ]);
 
          $this->call(Admin::class);
+         $this->call(DeviceSeeder::class);
+         $this->call(BrandSeeder::class);
+         $this->call(PhoneModelSeeder::class);
     }
 }

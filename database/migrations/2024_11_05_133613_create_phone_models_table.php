@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('phone_models', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('device_id')->constrained('devices')->onDelete('cascade');
-            $table->foreignId('brand_id')->constrained('devices')->onDelete('cascade');
+            $table->unsignedBigInteger('brand_id');
             $table->string('model');
             $table->string('color');
             $table->boolean('status')->default(1);
