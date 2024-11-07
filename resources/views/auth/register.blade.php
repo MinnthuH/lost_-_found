@@ -21,7 +21,7 @@
         rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
-</head>
+</head>        
 
     <!-- Signup Modal -->
     <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
@@ -47,8 +47,18 @@
                             <input type="email" class="form-control" name="email" required>
                         </div>
                         <div class="mb-3">
+                            @error('password')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            @error('password_confirmation')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                            <label for="password_confirmation" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" required>
                         </div>
                         <div class="mb-3">
                             <label for="address" class="form-label">Address</label>
