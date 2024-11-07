@@ -3,8 +3,13 @@
         max-width: 80%; /* Or any percentage you prefer */
     }
     .modal-body {
-        max-height: 80vh; /* Adjust as necessary */
+        max-height: 90vh; /* Adjust as necessary */
         overflow-y: auto; /* Add scroll if content overflows */
+    }
+    @media (max-width: 768px) {
+            .modal-lg {
+            max-width: 100%; /* Or any percentage you prefer */
+        }
     }
 </style>
 @extends('index')

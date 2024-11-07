@@ -27,6 +27,7 @@ class Request extends Model
         'message',
         'image',
         'status',
+        'public_show'
     ];
 
     // Define the relationship to the User model

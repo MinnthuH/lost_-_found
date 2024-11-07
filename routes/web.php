@@ -19,9 +19,11 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', function (){
-    return view('welcome_page');
-})->name('welcome_page');
+Route::middleware(['guest'])->group(function () {
+    Route::get('/', function (){
+        return view('welcome_page');
+    })->name('welcome_page');
+});
 
 // accept
 Route::middleware(['auth'])->group(function () {
@@ -29,7 +31,6 @@ Route::middleware(['auth'])->group(function () {
         return view('accept_page');
     })->name('accept_page');
 });
-
 
 Route::middleware('auth', 'verified')->group(function () {   
 

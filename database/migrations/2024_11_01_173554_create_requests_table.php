@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('message')->nullable();
             $table->string('image')->nullable();
             $table->string('status')->default('inreview');
-            $table->string('public_show')->nullable();
+            $table->string('public_show')->default('no');
             $table->timestamps();
         });
     }

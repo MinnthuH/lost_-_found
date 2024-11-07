@@ -28,6 +28,13 @@ class RequestResource extends Resource
                         'success' => 'Success',
                     ])
                     ->required(),
+                Forms\Components\Select::make('public_show')
+                    ->options([
+                        'yes' => 'Show On',
+                        'no' => 'Show Off',
+                    ])   
+                    ->label('Show Public')                                     
+                    ->required(),
             ]);
     }
 
@@ -71,6 +78,8 @@ class RequestResource extends Resource
                     ->label('Image')
                     ->url(fn($record) => asset('images/' . $record->image)), // Generate the URL dynamically
                 Tables\Columns\TextColumn::make('status')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('Show Public')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

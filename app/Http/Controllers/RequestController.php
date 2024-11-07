@@ -15,7 +15,7 @@ class RequestController extends Controller
 {
     // Request page
     public function request_page() {
-        $request_datas = RequestModel::orderBy('id', 'desc')->take(5)->get();
+        $request_datas = RequestModel::where('public_show','yes')->orderBy('id', 'desc')->take(5)->get();
         $users = User::all();       
         $devices = Device::all();
         $brands = Brand::all(); 
