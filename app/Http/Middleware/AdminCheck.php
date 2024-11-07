@@ -18,12 +18,18 @@ class AdminCheck
     // {
     //     return $next($request);
     // }
-     
+
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
-            return $next($request);
+        $user = Auth::user();
+
+        if ($user instanceof FilamentUser && $user instanceof MustVerifyEmail) {
+            if (! $user->canAccessFilament() && ! $user->hasVerifiedEmail()) {
+                return redirect()->route('verification.notice');
+            }
         }
-        return redirect('/request-page');
+
+        return $next($request);
     }
+
 }

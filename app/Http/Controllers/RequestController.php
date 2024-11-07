@@ -16,17 +16,17 @@ class RequestController extends Controller
     // Request page
     public function request_page() {
         $request_datas = RequestModel::where('public_show','yes')->orderBy('id', 'desc')->take(5)->get();
-        $users = User::all();       
+        $users = User::all();
         $devices = Device::all();
-        $brands = Brand::all(); 
+        $brands = Brand::all();
         $models = PhoneModel::all();
         // dd($models);
         return view('request_page', compact('request_datas', 'users','devices','brands','models'));
-    }    
+    }
 
     public function get_color(Request $request)
-    {       
-        
+    {
+
         $colors = PhoneModel::select('color')->where('model', $request->model)->get();
         if ($colors->isEmpty()) {
             return response()->json(['error' => 'Colors not found'], 404);
@@ -39,10 +39,10 @@ class RequestController extends Controller
     }
 
 //     public function get_color(Request $request)
-// {       
+// {
 //     // Get the color data for the given model
 //     $colorData = PhoneModel::select('color')->where('model', $request->model)->first();
-    
+
 //     if (!$colorData) {
 //         return response()->json(['error' => 'Colors not found'], 404);
 //     }
@@ -57,11 +57,11 @@ class RequestController extends Controller
     // Request store
     public function request_register(Request $request) {
         // Validate the request
-        $validatedData = $request->validate([            
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',            
+        $validatedData = $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             // Add other fields as necessary
         ]);
-                
+
             $request_store = new RequestModel();
             $request_store->job_id = $this->generateUniqueIdWithDate($request->lost_date);
             $request_store->user_id = Auth::user()->id;
@@ -88,8 +88,8 @@ class RequestController extends Controller
             // $path = $file->storeAs('images', $filename, 'public');
             // $request_store->image = $path;
 
-            $request_store->save();            
-            return redirect()->route('accept_page')->with('success', 'Your Request Form is Successful!');        
+            $request_store->save();
+            return redirect()->route('accept_page')->with('success', 'Your Request Form is Successful!');
     }
 
     // Function to generate unique ID with date
