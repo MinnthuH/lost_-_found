@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
+
+Route::get('/verify-account',[HomeController::class,'verifyaccount'])->name('verifyaccount');
+Route::post('/verityotp',[HomeController::class,'useractivication'])->name('verifyotp');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function (){
@@ -46,3 +54,7 @@ Route::middleware('auth', 'verified')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
