@@ -38,22 +38,6 @@ class RequestController extends Controller
         return response()->json($colors);
     }
 
-//     public function get_color(Request $request)
-// {
-//     // Get the color data for the given model
-//     $colorData = PhoneModel::select('color')->where('model', $request->model)->first();
-
-//     if (!$colorData) {
-//         return response()->json(['error' => 'Colors not found'], 404);
-//     }
-
-//     // Split the color string by comma and space and convert it to an array
-//     $colorData->color = explode(', ', $colorData->color);
-
-//     // Return the list of colors as a JSON response
-//     return response()->json($colorData);
-// }
-
     // Request store
     public function request_register(Request $request) {
         // Validate the request

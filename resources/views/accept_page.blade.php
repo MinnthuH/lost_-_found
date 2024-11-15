@@ -34,7 +34,7 @@
                     <div class="card border-success">
                         <div class="card-header">Your Request is review...</div>
                         <div class="card-body text-success">
-                            <h5 class="card-title">Job ID : demo 123456</h5>
+                            <h5 class="card-title">Job ID : {{ $job_id->job_id }}</h5>
                             <p class="card-text">အမြန်ဆုံးရှာဖွေတွေ့ရှိနိုင်အောင်ဆောင်ရွက်နေပါတယ်ခင်ဗျာ...</p>
                         </div>
                     </div>

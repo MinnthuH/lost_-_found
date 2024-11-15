@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,21 +38,23 @@ Route::middleware(['guest'])->group(function () {
 // accept
 Route::middleware(['auth'])->group(function () {
     Route::get('/accept_page', function () {
-        return view('accept_page');
+        $userId = Auth::user()->id;
+        $job_id = Request::where('user_id',$userId)->first();
+        return view('accept_page',compact('job_id'));
     })->name('accept_page');
 });
 
-Route::middleware('auth', 'verified')->group(function () {   
+Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // request 
+    // request
     Route::get('/request-page', [RequestController::class,'request_page'])->name('request-page');
     Route::post('/request_register',[RequestController::class,'request_register'])->name('request_register');
     Route::post('/get_color',[RequestController::class,'get_color'])->name('get.color');
-    
+
 });
 
 require __DIR__.'/auth.php';

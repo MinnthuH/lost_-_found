@@ -33,7 +33,7 @@
             <div class="mb-5 mt-3 mb-lg-0 text-center text-lg-start">
                 <h3 class="display-1 lh-1 mb-3">Running Process..</h3>
                 <div class="table-responsive">
-                    <table class="table table-dark table-hover">                    
+                    <table class="table table-dark table-hover">
                         <thead>
                             <tr>
                                 <th>Customer Name</th>
@@ -64,8 +64,8 @@
                         </tbody>
                     </table>
                 </div>
-                
-                <div class="d-flex flex-column flex-lg-row align-items-center">
+
+                <div class="d-flex flex-column flex-lg-row align-items-center mt-3">
                     <button type="button" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
                         data-bs-toggle="modal" data-bs-target="#requestModal">
                         Request
@@ -128,10 +128,10 @@
                     @csrf
                         <div class="row mb-3">
                             <h5>Select Device</h5>
-                            <div class="col-6 col-md-2">                                
+                            <div class="col-6 col-md-2">
                                 @foreach ($devices->take(ceil($devices->count() / 2)) as $index => $device)
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="device" id="device_{{ $device->id }}" value="{{ $device->id }}" data-device-id="{{ $device->id }}" required onchange="updateBrands()" 
+                                        <input class="form-check-input" type="radio" name="device" id="device_{{ $device->id }}" value="{{ $device->id }}" data-device-id="{{ $device->id }}" required onchange="updateBrands()"
                                             {{ $index === 0 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="device_{{ $device->id }}">
                                             {{ $device->name }}
@@ -139,7 +139,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <div class="col-6 col-md-2">                                
+                            <div class="col-6 col-md-2">
                                 @foreach ($devices->skip(ceil($devices->count() / 2)) as $index => $device)
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="device" id="device_{{ $device->id }}" value="{{ $device->id }}" data-device-id="{{ $device->id }}" required onchange="updateBrands()">
@@ -150,7 +150,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="mb-3 col-12 col-md-6"> <!-- Changed to col-12 for mobile -->
                                 <label for="brand_id" class="form-label">Phone Brand</label>
@@ -227,11 +227,11 @@
                                 <label for="address" class="form-label">Address</label>
                                 <textarea name="address" class="form-control"></textarea>
                             </div>
-                        </div>                       
+                        </div>
                         <div class="d-flex justify-content-around">
                             <button type="submit" class="btn btn-primary col-4">Request</button>
                             <button type="button" id="clear_data" class="btn btn-danger col-4" onclick="clearFormData()">Clear Data</button>
-                        </div>                        
+                        </div>
                 </form>
             </div>
         </div>
@@ -310,7 +310,7 @@
     });
 
     // Call updateBrands when the page loads
-    window.onload = updateBrands;    
+    window.onload = updateBrands;
 
 
     function clearFormData() {

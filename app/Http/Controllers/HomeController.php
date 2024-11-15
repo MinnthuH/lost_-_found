@@ -29,7 +29,7 @@ class HomeController extends Controller
         $get_user = User::where('email', auth()->user()->email)->first();
 
         if($get_user->is_activate == 1){
-            return view('request-page');
+            return redirect('/request-page');
         }else{
             return redirect('/verify-account');
         }
