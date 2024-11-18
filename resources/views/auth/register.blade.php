@@ -26,7 +26,7 @@
     <!-- Signup Modal -->
     <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content" style="background-color: rgba(0, 0, 0, 0.5); padding: 20px; color: white;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -35,36 +35,39 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
+                            <label for="name" class="form-label text-white">Name</label>
                             <input type="text" class="form-control" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Phone</label>
+                            <label for="phone" class="form-label text-white">Phone</label>
                             <input type="text" class="form-control" name="phone" required>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
+                            <label for="email" class="form-label text-white">Email address</label>
                             <input type="email" class="form-control" name="email" required>
                         </div>
                         <div class="mb-3">
                             @error('password')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label text-white">Password</label>
                             <input type="password" class="form-control" name="password" required>
                         </div>
                         <div class="mb-3">
                             @error('password_confirmation')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
-                            <label for="password_confirmation" class="form-label">Confirm Password</label>
+                            <label for="password_confirmation" class="form-label text-white">Confirm Password</label>
                             <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" required>
                         </div>
                         <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
+                            <label for="address" class="form-label text-white">Address</label>
                             <input type="text" class="form-control" name="address">
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                        <!-- <button type="submit" class="btn btn-primary w-100">Sign Up</button> -->
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            Sign Up
+                        </button>
                     </form>
                 </div>
             </div>

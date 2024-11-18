@@ -5,8 +5,8 @@
 
 @section('main')
 
-<div class="container px-5">
-    <div class="row gx-5 align-items-center">
+<div class="container-fluid container-md">
+    <div class="row align-items-center">
         <div class="col-lg-6">
             @if (session('error'))
                 <div class="alert alert-dismissible fade show bg-danger text-white" role="alert">
@@ -23,7 +23,7 @@
                 <div class="d-flex flex-column flex-lg-row align-items-center">
                     <button type="button" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
                         data-bs-toggle="modal" data-bs-target="#signupModal">
-                        SignUp
+                        <b>Sign Up</b>
                     </button>
                 </div>
             </div>

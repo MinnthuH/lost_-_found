@@ -29,7 +29,7 @@
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content" style="background-color: rgba(0, 0, 0, 0.5); padding: 20px; color: white;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="loginModalLabel">Login</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -38,14 +38,14 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
+                            <label for="email" class="form-label text-white">Email address</label>
                             <input type="email" class="form-control" name="email" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label text-white">Password</label>
                             <input type="password" class="form-control" name="password" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                        <button type="submit" class="btn btn-outline-primary w-100">Login</button>
                     </form>
                 </div>
             </div>
