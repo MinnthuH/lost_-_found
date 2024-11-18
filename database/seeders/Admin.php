@@ -23,7 +23,8 @@ class Admin extends Seeder
             'address' => 'Yangon',
             'status' => 'active',
             'password' => bcrypt('admin'), // passwrod
-            'role' => 'admin'
+            'role' => 'admin',
+            'is_activate' => '1',
         ]);
         $role = Role::create(['name' => 'admin']);
         $user->assignRole($role);
